@@ -34,8 +34,8 @@ var objective = [
 
 
 // Grid drawing offset
-var gridOffsetX = 50;
-var gridOffsetY = 50;
+var gridOffsetX = 75;
+var gridOffsetY = 100;
 
 var tileSize = 32;
 
@@ -98,10 +98,21 @@ function keyUpHandler(e) {
     }
 }
 
-function drawGrid() {
+function drawGrid(currentGrid, x, y, text) {
+    var strokeWidth = tileSize * gridX + 4;
+    var strokeHeight = tileSize * gridY + 4;
+
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = '20px sans-serif';
+    ctx.textAlign = "center";
+    ctx.fillText(text, x+strokeWidth/2-4, y-20);
+
+    ctx.strokeStyle = "#0095DD";
+    ctx.strokeRect(x-4, y-4, strokeWidth, strokeHeight);
+
     for (var i = 0; i < gridX; i++) {
         for (var j = 0; j < gridY; j++) {
-            var currentValue = grid[j][i];
+            var currentValue = currentGrid[j][i];
             if (currentValue != 0) {
                 if (currentValue == 1) {
                     ctx.fillStyle = "#0095DD";
@@ -109,10 +120,7 @@ function drawGrid() {
                     ctx.fillStyle = "#FF0000";
                 }
 
-                ctx.beginPath();
-                ctx.arc(i*tileSize+gridOffsetX, j*tileSize+gridOffsetY, 12, 0, Math.PI*2);
-                ctx.fill();
-                ctx.closePath();
+                ctx.fillRect(i*tileSize+x, j*tileSize+y, tileSize-4, tileSize-4);
             }
         }
     }
@@ -120,8 +128,8 @@ function drawGrid() {
 
 function drawPlayer() {
     ctx.beginPath();
-    ctx.arc(playerX*tileSize+gridOffsetX, playerY*tileSize+gridOffsetY, 10, 0, Math.PI*2);
-    ctx.fillStyle = "#FFFF00";
+    ctx.arc(playerX*tileSize+gridOffsetX+14, playerY*tileSize+gridOffsetY+14, 10, 0, Math.PI*2);
+    ctx.fillStyle = "#FFFFFF";
     ctx.fill();
     ctx.closePath();
 }
@@ -135,7 +143,8 @@ function draw() {
 
     if (state == "playing") {
 
-        drawGrid();
+        drawGrid(grid, gridOffsetX, gridOffsetY, "You are here");
+        drawGrid(objective, gridOffsetX+200, gridOffsetY, "Copy this");
 
         if (!moved) {
             // Don't allow diagonal moves
@@ -203,7 +212,6 @@ function gridsEqual(grid1, grid2) {
         for (var j = 0; j < gridY; j++) {
             var value1 = grid1[j][i];
             var value2 = grid2[j][i];
-            console.log("checking " + value1 + " and " + value2);
             if (grid1[j][i] != grid2[j][i]) return false;
         }
     }
