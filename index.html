@@ -131,9 +131,11 @@ function draw() {
     ctx.rect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#000000";
     ctx.fill();
-    drawGrid();
+    
 
     if (state == "playing") {
+
+        drawGrid();
 
         if (!moved) {
             // Don't allow diagonal moves
@@ -181,12 +183,18 @@ function draw() {
         }
     }
 
-    drawPlayer();
+    if (state == "playing") drawPlayer();
 
     // If the player wins, change state and stop playing
     if (state != "win" && gridsEqual(grid, objective)) {
-        alert("You win!!!");
         state = "win";
+    }
+
+    if (state == "win") {
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = '48px sans-serif';
+        ctx.textAlign = "center";
+        ctx.fillText("YOU WON!", 240, 160);
     }
 }
 
