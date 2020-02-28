@@ -24,6 +24,15 @@ var grid = [
     [0,0,0,0]
 ];
 
+// Pattern that you must copy
+var objective = [
+    [0,0,0,0],
+    [0,1,1,0],
+    [0,1,1,0],
+    [0,0,0,0]
+];
+
+
 // Grid drawing offset
 var gridOffsetX = 50;
 var gridOffsetY = 50;
@@ -116,6 +125,9 @@ function drawPlayer() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.rect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#000000";
+    ctx.fill();
     drawGrid();
 
     if (!moved) {
@@ -163,6 +175,23 @@ function draw() {
     }
 
     drawPlayer();
+
+    if (gridsEqual(grid, objective)) {
+        alert("You win!!!");
+    }
+}
+
+function gridsEqual(grid1, grid2) {
+    for (var i = 0; i < gridX; i++) {
+        for (var j = 0; j < gridY; j++) {
+            var value1 = grid1[j][i];
+            var value2 = grid2[j][i];
+            console.log("checking " + value1 + " and " + value2);
+            if (grid1[j][i] != grid2[j][i]) return false;
+        }
+    }
+
+    return true;
 }
 
 setInterval(draw, 10);
