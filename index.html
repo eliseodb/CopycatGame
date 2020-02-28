@@ -47,6 +47,9 @@ var playerY = 0;
 var moved = false;
 var waitForNextMove = 0;
 
+// Game state
+var state = "playing";
+
 // Canvas definition
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
@@ -130,38 +133,42 @@ function draw() {
     ctx.fill();
     drawGrid();
 
-    if (!moved) {
-        // Don't allow diagonal moves
-        if (rightPressed) {
-            if (playerX < gridX-1) {
-                playerX = Math.min(++playerX, gridX-1);
-                moved = true;
-            }            
-        } else if (leftPressed) {
-            if (playerX > 0) {
-                playerX = Math.max(--playerX, 0);
-                moved = true;
-            }            
-        } else if (upPressed) {
-            if (playerY > 0) {
-                playerY = Math.max(--playerY, 0);
-                moved = true;
-            }            
-        } else if (downPressed) {
-            if (playerY < gridY-1) {
-                playerY = Math.min(++playerY, gridY-1);
-                moved = true;
-            }            
-        }
+    if (state == "playing") {
 
-        if (moved) {
-            var currentValue = grid[playerY][playerX];
-            if (currentValue == 0) {
-                grid[playerY][playerX] = 1;
-            } else {
-                grid[playerY][playerX] = 0;
+        if (!moved) {
+            // Don't allow diagonal moves
+            if (rightPressed) {
+                if (playerX < gridX-1) {
+                    playerX = Math.min(++playerX, gridX-1);
+                    moved = true;
+                }            
+            } else if (leftPressed) {
+                if (playerX > 0) {
+                    playerX = Math.max(--playerX, 0);
+                    moved = true;
+                }            
+            } else if (upPressed) {
+                if (playerY > 0) {
+                    playerY = Math.max(--playerY, 0);
+                    moved = true;
+                }            
+            } else if (downPressed) {
+                if (playerY < gridY-1) {
+                    playerY = Math.min(++playerY, gridY-1);
+                    moved = true;
+                }            
+            }
+
+            if (moved) {
+                var currentValue = grid[playerY][playerX];
+                if (currentValue == 0) {
+                    grid[playerY][playerX] = 1;
+                } else {
+                    grid[playerY][playerX] = 0;
+                }
             }
         }
+
     }
 
     // Wait 10 frames for the next move
@@ -176,8 +183,10 @@ function draw() {
 
     drawPlayer();
 
-    if (gridsEqual(grid, objective)) {
+    // If the player wins, change state and stop playing
+    if (state != "win" && gridsEqual(grid, objective)) {
         alert("You win!!!");
+        state = "win";
     }
 }
 
