@@ -47,6 +47,9 @@ var playerY = 0;
 var moved = false;
 var waitForNextMove = 0;
 
+// Number of moves
+var moves = 0;
+
 // Game state
 var state = "playing";
 
@@ -177,6 +180,8 @@ function draw() {
                 } else {
                     grid[playerY][playerX] = 0;
                 }
+
+                moves++;
             }
         }
 
@@ -205,6 +210,10 @@ function draw() {
         ctx.textAlign = "center";
         ctx.fillText("YOU WON!", 240, 160);
     }
+
+    ctx.font = "18px sans-serif";
+    ctx.textAlign = "right";
+    ctx.fillText("Moves: " + moves, 460, 300);
 }
 
 function gridsEqual(grid1, grid2) {
