@@ -62,6 +62,7 @@ var rightPressed = false;
 var leftPressed = false;
 var upPressed = false;
 var downPressed = false;
+var spacePressed = false;
 
 // Keyboard event listeners
 document.addEventListener("keydown", keyDownHandler, false);
@@ -83,6 +84,11 @@ function keyDownHandler(e) {
     else if(e.key == "Down" || e.key == "ArrowDown") {
         downPressed = true;
     }
+
+    if (e.key == " ") {
+        spacePressed = true;
+        console.log("space pressed");
+    }
 }
 
 function keyUpHandler(e) {
@@ -98,6 +104,11 @@ function keyUpHandler(e) {
     }
     else if(e.key == "Down" || e.key == "ArrowDown") {
         downPressed = false;
+    }
+
+    if (e.key == " ") {
+        spacePressed = false;
+        console.log("space released");
     }
 }
 
@@ -209,11 +220,33 @@ function draw() {
         ctx.font = '48px sans-serif';
         ctx.textAlign = "center";
         ctx.fillText("YOU WON!", 240, 160);
+
+        ctx.font = '20px sans-serif';
+        ctx.fillText("Press Space to play again", 240, 200);
+
+        if (spacePressed) {
+            resetGame();
+        }
     }
 
     ctx.font = "18px sans-serif";
     ctx.textAlign = "right";
     ctx.fillText("Moves: " + moves, 460, 300);
+}
+
+function resetGame() {
+    playerX = 0;
+    playerY = 0;
+    
+    grid = [
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0]
+    ];
+
+    state = "playing";
+    moves = 0;
 }
 
 function gridsEqual(grid1, grid2) {
