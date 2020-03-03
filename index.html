@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Canvas Test</title>
+	<title>Copycat Game</title>
 	<style type="text/css">
+        /*@import url(https://fonts.googleapis.com/css?family=Barlow);*/
+        @import url('https://fonts.googleapis.com/css?family=Rubik&display=swap');
 		canvas { background: #eee; }
 	</style>
 </head>
@@ -11,6 +13,12 @@
 <canvas id="myCanvas" width="480" height="320"></canvas>
 
 <script type="text/javascript">
+
+// Colors
+var backgroundColor = "#fdf6e3";
+var standardColor = "#666666";
+var highlightColor = "#ff6bb3";
+// var highlightColor = "#fc449d";
 
 // Grid dimensions
 var gridX = 4;
@@ -116,12 +124,12 @@ function drawGrid(currentGrid, x, y, text) {
     var strokeWidth = tileSize * gridX + 4;
     var strokeHeight = tileSize * gridY + 4;
 
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = '20px sans-serif';
+    ctx.fillStyle = standardColor;
+    ctx.font = '20px Rubik';
     ctx.textAlign = "center";
     ctx.fillText(text, x+strokeWidth/2-4, y-20);
 
-    ctx.strokeStyle = "#0095DD";
+    ctx.strokeStyle = standardColor;
     ctx.strokeRect(x-4, y-4, strokeWidth, strokeHeight);
 
     for (var i = 0; i < gridX; i++) {
@@ -129,7 +137,7 @@ function drawGrid(currentGrid, x, y, text) {
             var currentValue = currentGrid[j][i];
             if (currentValue != 0) {
                 if (currentValue == 1) {
-                    ctx.fillStyle = "#0095DD";
+                    ctx.fillStyle = standardColor;
                 } else {
                     ctx.fillStyle = "#FF0000";
                 }
@@ -143,7 +151,7 @@ function drawGrid(currentGrid, x, y, text) {
 function drawPlayer() {
     ctx.beginPath();
     ctx.arc(playerX*tileSize+gridOffsetX+14, playerY*tileSize+gridOffsetY+14, 10, 0, Math.PI*2);
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = highlightColor;
     ctx.fill();
     ctx.closePath();
 }
@@ -151,7 +159,7 @@ function drawPlayer() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.rect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = backgroundColor;
     ctx.fill();
     
 
@@ -200,7 +208,7 @@ function draw() {
 
     // Wait 10 frames for the next move
     if (moved) {
-        if (waitForNextMove < 10) {
+        if (waitForNextMove < 15) {
             waitForNextMove++;
         } else {
             waitForNextMove = 0;
@@ -216,12 +224,12 @@ function draw() {
     }
 
     if (state == "win") {
-        ctx.fillStyle = "#FFFFFF";
-        ctx.font = '48px sans-serif';
+        ctx.fillStyle = standardColor;
+        ctx.font = '48px Rubik';
         ctx.textAlign = "center";
         ctx.fillText("YOU WON!", 240, 160);
 
-        ctx.font = '20px sans-serif';
+        ctx.font = '20px Rubik';
         ctx.fillText("Press Space to play again", 240, 200);
 
         if (spacePressed) {
@@ -229,8 +237,9 @@ function draw() {
         }
     }
 
-    ctx.font = "18px sans-serif";
+    ctx.font = "18px Rubik";
     ctx.textAlign = "right";
+    ctx.fillStyle = standardColor;
     ctx.fillText("Moves: " + moves, 460, 300);
 }
 
