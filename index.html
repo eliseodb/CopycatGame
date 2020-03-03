@@ -245,6 +245,13 @@ function resetGame() {
         [0,0,0,0]
     ];
 
+    // Random objective
+    for (var i = 0; i < gridX; i++) {
+        for (var j = 0; j < gridY; j++) {
+            objective[i][j] = getRandomInt(0, 1);
+        }
+    }
+
     state = "playing";
     moves = 0;
 }
@@ -259,6 +266,10 @@ function gridsEqual(grid1, grid2) {
     }
 
     return true;
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 setInterval(draw, 10);
