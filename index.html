@@ -59,7 +59,7 @@ var waitForNextMove = 0;
 var moves = 0;
 
 // Game state
-var state = "playing";
+var state = "start";
 
 // Canvas definition
 var canvas = document.getElementById("myCanvas");
@@ -95,7 +95,6 @@ function keyDownHandler(e) {
 
     if (e.key == " ") {
         spacePressed = true;
-        console.log("space pressed");
     }
 }
 
@@ -116,7 +115,6 @@ function keyUpHandler(e) {
 
     if (e.key == " ") {
         spacePressed = false;
-        console.log("space released");
     }
 }
 
@@ -161,7 +159,23 @@ function draw() {
     ctx.rect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = backgroundColor;
     ctx.fill();
-    
+
+    if (state == "start") {
+        ctx.fillStyle = standardColor;
+        ctx.font = '48px Rubik';
+        ctx.textAlign = "center";
+        ctx.fillText("COPYCAT", 240, 100);
+
+        ctx.font = '20px Rubik';
+        ctx.fillText("Use arrow keys to move", 240, 180);
+        ctx.fillText("Press Space to play", 240, 240);
+
+        if (spacePressed) {
+            state = "playing";
+        }
+
+        return;
+    }
 
     if (state == "playing") {
 
@@ -206,7 +220,7 @@ function draw() {
 
     }
 
-    // Wait 10 frames for the next move
+    // Wait 15 frames for the next move
     if (moved) {
         if (waitForNextMove < 15) {
             waitForNextMove++;
