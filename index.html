@@ -5,14 +5,21 @@
 	<style type="text/css">
         /*@import url(https://fonts.googleapis.com/css?family=Barlow);*/
         @import url('https://fonts.googleapis.com/css?family=Rubik&display=swap');
+
+        body { overflow: hidden; }
+
 		canvas { background: #eee; }
 	</style>
 </head>
 <body>
 
-<canvas id="myCanvas" width="480" height="320"></canvas>
+<canvas id="myCanvas" width="1366" height="768"></canvas>
 
 <script type="text/javascript">
+
+// Canvas size
+var canvasWidth = 1366;
+var canvasHeight = 768;
 
 // Colors
 var backgroundColor = "#fdf6e3";
@@ -42,10 +49,10 @@ var objective = [
 
 
 // Grid drawing offset
-var gridOffsetX = 75;
-var gridOffsetY = 100;
+var gridOffsetX = canvasWidth/6;
+var gridOffsetY = 200;
 
-var tileSize = 32;
+var tileSize = 80;
 
 // Player position
 var playerX = 0;
@@ -123,7 +130,7 @@ function drawGrid(currentGrid, x, y, text) {
     var strokeHeight = tileSize * gridY + 4;
 
     ctx.fillStyle = standardColor;
-    ctx.font = '20px Rubik';
+    ctx.font = '40px Rubik';
     ctx.textAlign = "center";
     ctx.fillText(text, x+strokeWidth/2-4, y-20);
 
@@ -148,7 +155,7 @@ function drawGrid(currentGrid, x, y, text) {
 
 function drawPlayer() {
     ctx.beginPath();
-    ctx.arc(playerX*tileSize+gridOffsetX+14, playerY*tileSize+gridOffsetY+14, 10, 0, Math.PI*2);
+    ctx.arc(playerX*tileSize+gridOffsetX+38, playerY*tileSize+gridOffsetY+38, 25, 0, Math.PI*2);
     ctx.fillStyle = highlightColor;
     ctx.fill();
     ctx.closePath();
@@ -162,13 +169,13 @@ function draw() {
 
     if (state == "start") {
         ctx.fillStyle = standardColor;
-        ctx.font = '48px Rubik';
+        ctx.font = '96px Rubik';
         ctx.textAlign = "center";
-        ctx.fillText("COPYCAT", 240, 100);
+        ctx.fillText("COPYCAT", canvasWidth/2, canvasHeight/3);
 
-        ctx.font = '20px Rubik';
-        ctx.fillText("Use arrow keys to move", 240, 180);
-        ctx.fillText("Press Space to play", 240, 240);
+        ctx.font = '40px Rubik';
+        ctx.fillText("Use arrow keys to move", canvasWidth/2, canvasHeight/2);
+        ctx.fillText("Press Space to play", canvasWidth/2, canvasHeight/1.6);
 
         if (spacePressed) {
             state = "playing";
@@ -180,7 +187,7 @@ function draw() {
     if (state == "playing") {
 
         drawGrid(grid, gridOffsetX, gridOffsetY, "You are here");
-        drawGrid(objective, gridOffsetX+200, gridOffsetY, "Copy this");
+        drawGrid(objective, gridOffsetX*3.4, gridOffsetY, "Copy this");
 
         if (!moved) {
             // Don't allow diagonal moves
@@ -239,22 +246,22 @@ function draw() {
 
     if (state == "win") {
         ctx.fillStyle = standardColor;
-        ctx.font = '48px Rubik';
+        ctx.font = '96px Rubik';
         ctx.textAlign = "center";
-        ctx.fillText("YOU WON!", 240, 160);
+        ctx.fillText("YOU WON!", canvasWidth/2, canvasHeight/2.5);
 
-        ctx.font = '20px Rubik';
-        ctx.fillText("Press Space to play again", 240, 200);
+        ctx.font = '40px Rubik';
+        ctx.fillText("Press Space to play again", canvasWidth/2, canvasHeight/1.7);
 
         if (spacePressed) {
             resetGame();
         }
     }
 
-    ctx.font = "18px Rubik";
+    ctx.font = "40px Rubik";
     ctx.textAlign = "right";
     ctx.fillStyle = standardColor;
-    ctx.fillText("Moves: " + moves, 460, 300);
+    ctx.fillText("Moves: " + moves, canvasWidth-50, canvasHeight-50);
 }
 
 function resetGame() {
@@ -293,6 +300,13 @@ function gridsEqual(grid1, grid2) {
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function fullscreen() {
+    var elem = document.getElementById("myCanvas");
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    }
 }
 
 setInterval(draw, 10);
